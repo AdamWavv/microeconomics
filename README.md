@@ -1,6 +1,16 @@
-# Microeconomics
- The project consists of specification, estimation (modeling should be performed in the STATA package) and verification of a microeconometric model for a selected variable – based on a sufficiently large set of microdata.
- Data for this project can be found in this link [eurostat](https://ec.europa.eu/eurostat/web/microdata/public-microdata/statistics-on-income-and-living-conditions)
+# Project Overview
+
+The objective of this project is to specify, estimate, and verify a microeconometric model using the STATA package. The analysis is based on a selected variable from the EU-SILC dataset, which contains comprehensive microdata on income and living conditions in the European Union.
+
+# Data Source
+
+Data for this project can be obtained from the official Eurostat website:
+
+[EU-SILC Microdata](https://ec.europa.eu/eurostat/web/microdata/public-microdata/statistics-on-income-and-living-conditions)
+
+Additional information about the dataset, including variable descriptions and data structure, can be found in the following document:
+
+[EU-SILC User Guide](https://ec.europa.eu/eurostat/documents/203647/16195750/2021_Doc65_EUSILC_User_Guide.pdf)
 
 
 # Course Program
