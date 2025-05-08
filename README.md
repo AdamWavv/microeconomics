@@ -1,6 +1,6 @@
 # Microeconomics
  The project consists of specification, estimation (modeling should be performed in the STATA package) and verification of a microeconometric model for a selected variable – based on a sufficiently large set of microdata.
- Data for this project can be found in this link [https://ec.europa.eu/eurostat/web/microdata/public-microdata/statistics-on-income-and-living-conditions](eurostat)
+ Data for this project can be found in this link [eurostat](https://ec.europa.eu/eurostat/web/microdata/public-microdata/statistics-on-income-and-living-conditions)
 
 
 # Course Program
