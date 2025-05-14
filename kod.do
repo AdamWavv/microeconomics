@@ -83,8 +83,8 @@ label define emp_status 0 "Employed" 1 "Actively Seeking" 2 "Never Worked"
 label values employment_status emp_status
 
 * Zaufanie
-mvdecode PW130 PW140 PW150, mv(99)
-egen trust_index = rowmean(PW130 PW140 PW150)
+mvdecode PW130, mv(99)
+egen trust_index = rowmean(PW130)
 label var trust_index "Average Trust Index"
 gen trust_group = .
 replace trust_group = 1 if trust_index < 3
@@ -153,4 +153,5 @@ hausman ml1 ml2, alleqs constant
 margins , dydx(income total_hours benefits_allowances)
 margins, at(over_40_hours = (0 1))
 marginsplot, plotdimension(over_40_hours)
+
 
