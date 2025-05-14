@@ -2,343 +2,339 @@
 
 ## 1. Introduction
 
-The purpose of this study is to investigate the impact of working hours and health status on the level of trust in public institutions, particularly the police.  
-This analysis focuses on identifying whether exceeding a specific working hours threshold (e.g., 40 hours per week) influences perceived trust in law enforcement, accounting for health status as a potential moderating factor.
+This report examines the impact of working hours and health status on the level of trust in public institutions, specifically focusing on trust in the political system (`PW130`). The previous definition of the `trust_index` included trust in the political system, legal system, and police. However, the revised definition now focuses solely on trust in the political system (`PW130`). This adjustment aims to provide a more targeted analysis of political trust as influenced by work-related factors and health status.
+
+The purpose of this study is to investigate the impact of working hours and health status on the level of trust in public institutions, particularly the police. This analysis focuses on identifying whether exceeding a specific working hours threshold (40 hours per week) influences perceived trust in law enforcement, accounting for health status as a potential moderating factor.
 
 ### Research Questions:
-- Does working more than 40 hours per week affect trust in the police?
-- How does health status moderate the relationship between working hours and trust in the police?
+
+* Does working more than 40 hours per week affect trust in public institutions?
+* How does health status moderate the relationship between working hours and trust in institutions?
 
 ### Motivation:
-- Trust in public institutions is crucial for social stability.
-- Understanding the impact of work-related stress and health conditions on institutional trust can provide insights into broader societal patterns.
+
+* Trust in public institutions is crucial for social stability.
+* Understanding the impact of work-related stress and health conditions on institutional trust can provide insights into broader societal patterns.
 
 ---
 
 ## 2. Literature Review
 
-- **Angrist & Pischke (2009):** Regression Discontinuity Design as a causal inference tool in social sciences.
-- **Lee & Lemieux (2010):** Identifying treatment effects using RDD – application in labor economics.
-- **La Ferrara et al. (2012):** The effect of exposure to media on social attitudes and perceptions.
+* **Angrist & Pischke (2009):** Regression Discontinuity Design as a causal inference tool in social sciences.
+* **Lee & Lemieux (2010):** Identifying treatment effects using RDD – application in labor economics.
+* **La Ferrara et al. (2012):** The effect of exposure to media on social attitudes and perceptions.
 
 ---
 
-### **3.6 Trust Analysis by Income Group and Composite Variables**
+## 3. Data and Methodology
+
+### 3.1 Dataset Overview
+
+* **Source:** EU-SILC (EU Statistics on Income and Living Conditions)
+* **Year:** 2013
+* **Country:** Germany
+* **Observations:** 22,041
+* **Variables:** 78
+
+### 3.2 Data Preprocessing
+
+* Excluded observations with age above 80.
+* Converted string variables to numeric where necessary.
+* Generated composite variables:
+
+  * Income (`income`) – sum of cash (`PY010G`) and non-cash income (`PY020G`).
+  * Health Score (`health_score`) – based on chronic illness (`PH020`) and limitations (`PH030`).
+  * Benefits and Allowances (`benefits_allowances`) – sum of various social benefits.
+  * Trust Index (`trust_index`) – average trust in political, legal, and police institutions.
+  * Working Hours (`total_hours`) – sum of primary (`PL060`) and additional work hours (`PL100`).
+  * Over 40 Hours (`over_40_hours`) – binary variable indicating whether the respondent works more than 40 hours per week.
 
 ---
 
-The dataset utilized in this analysis is derived from the **EU Statistics on Income and Living Conditions (EU-SILC)**, a comprehensive dataset provided by **Eurostat**. It includes data on income, living conditions, health, and social inclusion for various European Union member states.
-
-* **Data Year:** 2013
-* **Target Country:** Germany
-* **Number of Observations:** 22,041
-* **Number of Variables:** 78
-
-The dataset provides both cross-sectional and longitudinal data, allowing for a comprehensive socio-economic analysis. Data was pre-processed and cleaned to ensure consistency and reduce missing values, as detailed in the subsequent sections.
-
----
-
-### **3.6.1 Composite Variables Overview**
-
-The dataset includes several composite variables that were generated to summarize key socio-economic indicators related to income, health, trust, and social benefits. These variables provide a structured framework for analyzing the relationship between these dimensions and public trust in institutions. Below is a summary of each generated variable, including the range of values and the number of valid observations.
-
-
-### **Summary of Generated Variables**
+### 3.3 Summary of Key Variables
 
 | Variable                 | Description                                | Observations | Value Range |
 | ------------------------ | ------------------------------------------ | ------------ | ----------- |
-| **income**               | Total Income (Cash + Non-Cash)             | 22,023       | 0 – 597,560 |
-| **health\_score**        | Health Status (1-3 scale)                  | 21,770       | 2 – 16      |
-| **trust\_index**         | Average Trust in Institutions (0-10)       | 22,041       | 0 – 10      |
-| **trust\_group**         | Trust Level (1: Low, 2: Moderate, 3: High) | 22,028       | 1 – 3       |
-| **benefits\_allowances** | Total Social Benefits                      | 21,760       | 0 – 135,000 |
-| **age**                  | Age in 2013                                | 22,041       | 16 – 98     |
+| **income**               | Total Income (Cash + Non-Cash)             | 21,205       | 0 – 597,560 |
+| **health\_score**        | Health Status (1-3 scale)                  | 21,207       | 1 – 3       |
+| **trust\_index**         | Average Trust in Political System (0-10)   | 21,906       | 0 – 10      |
+| **trust\_group**         | Trust Level (1: Low, 2: Moderate, 3: High) | 21,907       | 1 – 3       |
+| **benefits\_allowances** | Total Social Benefits                      | 21,757       | 0 – 135,000 |
+| **age**                  | Age in 2013                                | 21,220       | 16 – 80     |
+| **over\_40\_hours**      | Binary indicator for working > 40 hours    | 21,907       | 0 – 1       |
 
-
-
-This summary provides a clear overview of the key composite variables, their respective value ranges, and the number of valid observations, establishing a basis for further analysis and interpretation in subsequent sections.
-
+| Variable                 | Description                                | Observations | Value Range |
+| ------------------------ | ------------------------------------------ | ------------ | ----------- |
+| **income**               | Total Income (Cash + Non-Cash)             | 21,205       | 0 – 597,560 |
+| **health\_score**        | Health Status (1-3 scale)                  | 21,207       | 1 – 3       |
+| **trust\_index**         | Average Trust in Institutions (0-10)       | 21,906       | 0 – 10      |
+| **trust\_group**         | Trust Level (1: Low, 2: Moderate, 3: High) | 21,907       | 1 – 3       |
+| **benefits\_allowances** | Total Social Benefits                      | 21,757       | 0 – 135,000 |
+| **age**                  | Age in 2013                                | 21,220       | 16 – 80     |
+| **over\_40\_hours**      | Binary indicator for working > 40 hours    | 21,907       | 0 – 1       |
 
 ---
 
-#### **Income (`income`):**
+### 3.4 Model Specification
 
-A composite variable representing the total income of respondents, calculated as the sum of cash (`PY010G`) and non-cash income (`PY020G`). This variable serves as a comprehensive indicator of financial resources available to individuals.
+A multinomial logistic regression model was employed to assess the relationship between working hours, health status, and trust in public institutions, categorized as Low, Moderate, and High trust levels.
 
-* **Components:**
+#### Model Equation:
 
-  * `PY010G` – Cash income (in Euros)
-  * `PY020G` – Non-cash income (in Euros)
+```
+mlogit trust_group c.age c.income c.total_hours i.over_40_hours c.benefits_allowances i.health_score i.employment_status
+```
 
-**Implementation:**
+---
+
+### 4. Results
+
+#### 4.1 Multinomial Logistic Regression
+
+* **Number of Observations:** 550
+* **Pseudo R²:** 0.0197 (low explanatory power)
+* **Overall Model Significance:** LR chi² = 15.33, p = 0.7573
+
+| Variable      | Coefficient | Std. Error | p-value |
+| ------------- | ----------- | ---------- | ------- |
+| Over 40 hours | 0.6034      | 0.6126     | 0.325   |
+| Income        | 2.82e-07    | 7.13e-06   | 0.968   |
+| Total Hours   | 0.0077      | 0.0224     | 0.731   |
+| Health Score  | -0.7727     | 0.3905     | 0.048   |
+| Benefits      | -9.35e-06   | 0.000017   | 0.588   |
+
+* **Significant Variables:**
+
+  * `Health Score (Mild Issues)` negatively affects trust in the political system (p = 0.048).
+  * Working over 40 hours per week is not statistically significant in affecting trust in the political system (p = 0.325).
+
+This adjustment in the definition of `trust_index` narrows the interpretation to political trust only, potentially reducing the impact of work-related stress on broader institutional trust.
+
+* **Number of Observations:** 550
+* **Pseudo R²:** 0.0197 (very low explanatory power)
+* **Overall Model Significance:** LR chi² = 15.33, p = 0.7573
+
+| Variable      | Coefficient | Std. Error | p-value |
+| ------------- | ----------- | ---------- | ------- |
+| Over 40 hours | 0.6034      | 0.6126     | 0.325   |
+| Income        | 2.82e-07    | 7.13e-06   | 0.968   |
+| Total Hours   | 0.0077      | 0.0224     | 0.731   |
+| Health Score  | -0.7727     | 0.3905     | 0.048   |
+| Benefits      | -9.35e-06   | 0.000017   | 0.588   |
+
+* **Significant Variables:**
+
+  * `Health Score (Mild Issues)` negatively affects trust (p = 0.048).
+
+---
+
+### 4.2 Marginal Effects Analysis
+
+| Variable      | dy/dx     | Std. Error | p-value |
+| ------------- | --------- | ---------- | ------- |
+| Over 40 Hours | 0.1154    | 0.0509     | 0.023   |
+| Income        | -3.35e-08 | 4.66e-07   | 0.943   |
+| Total Hours   | -0.0005   | 0.0015     | 0.744   |
+
+* Individuals working over 40 hours per week have a **11.54% higher probability** of being in the Low Trust category (p = 0.023). This finding remains significant even after redefining `trust_index` to focus solely on the political system.
+
+| Variable      | dy/dx     | Std. Error | p-value |
+| ------------- | --------- | ---------- | ------- |
+| Over 40 Hours | 0.1154    | 0.0509     | 0.023   |
+| Income        | -3.35e-08 | 4.66e-07   | 0.943   |
+| Total Hours   | -0.0005   | 0.0015     | 0.744   |
+
+* Individuals working over 40 hours per week have a **11.54% higher probability** of being in the Low Trust category (p = 0.023).
+
+---
+
+### 4.3 Robustness Checks
+
+* **Hausman Test:** No significant difference between models (`p = 1.000`).
+* **Combining Categories:** No significant reason to combine trust categories (`p > 0.60`).
+
+---
+
+### 5. Conclusions and Implications
+
+* Working over 40 hours per week is associated with a higher probability of being in the Low Trust category, specifically in the context of political trust (`PW130`).
+* Health status, particularly mild health issues, significantly reduces political trust (p = 0.048).
+* Income and social benefits do not significantly affect political trust levels.
+
+### Policy Implications:
+
+* Implement targeted support for overworked and mildly unhealthy individuals to mitigate negative perceptions of the political system.
+
+* Further research is necessary to explore interactions between working hours and health status, especially in relation to broader institutional trust, including legal and police systems.
+
+* Working over 40 hours per week is associated with a higher probability of being in the Low Trust category.
+
+* Health status, particularly mild health issues, significantly reduces trust in institutions.
+
+* Income and social benefits do not significantly affect trust levels.
+
+### Policy Implications:
+
+* Implement targeted support for overworked and mildly unhealthy individuals to mitigate negative perceptions of public institutions.
+* Further analysis is warranted to explore long-term effects and potential interactions with socio-economic variables.
+
+---
+
+### 6. STATA Code
 
 ```stata
+
+.*-----------------------------------*
+*   ANALIZA DANYCH - PRZYGOTOWANIE ZMIENNYCH  *
+*-----------------------------------*
+
+* Struktura danych
+describe
+
+* Wyświetlenie pierwszych 5 rekordów
+list in 1/5
+
+* Sprawdzenie brakujących wartości
+misstable summarize
+
+* Sprawdzenie unikalnych wartości dla kluczowych zmiennych
+tabulate PB150  // Płeć
+tabulate PB190  // Stan cywilny
+
+
+*-----------------------------------*
+*   TWORZENIE ZMIENNYCH KOMPOZYTOWYCH   *
+*-----------------------------------*
+
+* Wiek
+gen age = PB110 - PB140
+label var age "Wiek w 2013 roku"
+keep if age <= 80
+
+* Grupa wiekowa
+gen age_group = .
+replace age_group = 1 if age < 30
+replace age_group = 2 if age >= 30 & age < 67
+replace age_group = 3 if age >= 67
+label define age_grp 1 "Young Adults" 2 "Adults" 3 "Seniors"
+label values age_group age_grp
+
+* Dochód
 gen income = PY010G + PY020G
-label var income "Total Income (Cash + Non-Cash)"
-```
+label var income "Cash and Non-Cash Income"
+keep if income >= 0
+summarize income
+histogram income, normal
 
-**Summary Statistics for `income`:**
+* Zasiłki i świadczenia
+* Sprawdzenie typu danych przed utworzeniem zmiennej
 
-```
-. summarize income
-```
+describe PY090 PY100G PY110G PY120G
 
-| Variable | Obs    | Mean      | Std. Dev. | Min | Max     |
-| -------- | ------ | --------- | --------- | --- | ------- |
-| income   | 22,023 | 16,027.04 | 24,244.27 | 0   | 597,560 |
+* Konwersja do typu numerycznego (jeśli potrzebna)
+destring PY090 PY100G PY110G PY120G, replace force
 
----
+* Tworzenie zmiennej benefits_allowances
+gen benefits_allowances = PY090 + PY100G + PY110G + PY120G
+label var benefits_allowances "Benefits and Allowances"
+keep if benefits_allowances >= 0
 
-#### **2. Health Score (`health_score`):**
+* Godziny pracy
+gen total_hours = PL060 + PL100
+label var total_hours "Total Hours Worked"
+gen over_40_hours = (total_hours > 40)
+label define over40 0 "40 hours or less" 1 "Over 40 hours"
+label values over_40_hours over40
 
-An aggregate measure of health status, combining information on the presence of chronic illness (`PH020`) and limitations in daily activities (`PH030`). The variable categorizes respondents based on the severity of their health conditions.
-
-* **Components:**
-
-  * `PH020` – Chronic illness (1 = Yes, 2 = No, -1 = Missing)
-  * `PH030` – Limitation in activities (1 = Strongly limited, 2 = Limited, 3 = Not limited)
-
-**Categories:**
-
-* `1` – No health issues
-* `2` – Mild health issues
-* `3` – Severe health issues
-
-**Implementation:**
-
-```stata
+* Zdrowie
 gen health_score = .
-replace health_score = 1 if PH020 == 2 & PH030 == 3
-replace health_score = 2 if PH020 == 1 | PH030 == 2
 replace health_score = 3 if PH020 == 1 & PH030 == 1
+replace health_score = 2 if (PH020 == 1 & PH030 != 1) | (PH030 == 2)
+replace health_score = 1 if PH020 == 2 & PH030 == 3
 label define health_lbl 1 "No Health Issues" 2 "Mild Issues" 3 "Severe Issues"
 label values health_score health_lbl
-```
 
-**Summary Statistics for `health_score`:**
+* Status zatrudnienia
+gen employment_status = PL040
+replace employment_status = 1 if PL040 == 0 & PL020 == 1
+replace employment_status = 2 if PL040 == 0 & PL015 == 1
+label define emp_status 0 "Employed" 1 "Actively Seeking" 2 "Never Worked"
+label values employment_status emp_status
 
-```
-. summarize health_score
-```
-
-| Variable      | Obs    | Mean | Std. Dev. | Min | Max |
-| ------------- | ------ | ---- | --------- | --- | --- |
-| health\_score | 21,770 | 4.66 | 1.84      | 2   | 16  |
-
----
-
-#### **3. Trust Index (`trust_index`):**
-
-A composite measure of trust in public institutions, calculated as the average of trust in the political system, legal system, and police. Values coded as `99` (Do not know) were recoded as missing (`.`).
-
-* **Components:**
-
-  * `PW130` – Trust in the political system (0-10 scale, 99 = Missing)
-  * `PW140` – Trust in the legal system (0-10 scale, 99 = Missing)
-  * `PW150` – Trust in the police (0-10 scale, 99 = Missing)
-
-**Implementation:**
-
-```stata
-mvdecode PW130 PW140 PW150, mv(99)
-egen trust_index = rowmean(PW130 PW140 PW150)
-label var trust_index "Average Trust Index (Political, Legal, Police)"
-```
-
-**Summary Statistics for `trust_index`:**
-
-```
-. summarize trust_index
-```
-
-| Variable     | Obs    | Mean | Std. Dev. | Min | Max |
-| ------------ | ------ | ---- | --------- | --- | --- |
-| trust\_index | 22,041 | 5.34 | 2.43      | 0   | 10  |
-
----
-
-#### **4. Trust Group (`trust_group`):**
-
-Based on the `trust_index`, respondents were categorized into three trust levels:
-
-* **1 – Low Trust:** `trust_index < 3`
-* **2 – Moderate Trust:** `3 <= trust_index <= 7`
-* **3 – High Trust:** `trust_index > 7`
-
-**Implementation:**
-
-```stata
+* Zaufanie
+mvdecode PW130, mv(99)
+egen trust_index = rowmean(PW130)
+label var trust_index "Average Trust Index"
 gen trust_group = .
 replace trust_group = 1 if trust_index < 3
 replace trust_group = 2 if trust_index >= 3 & trust_index <= 7
 replace trust_group = 3 if trust_index > 7
 label define trust_lbl 1 "Low Trust" 2 "Moderate Trust" 3 "High Trust"
 label values trust_group trust_lbl
-```
 
-**Summary Statistics for `trust_group`:**
+
+*-----------------------------------*
+*   ANALIZA DANYCH - REGRESJA LOGITOWA   *
+*-----------------------------------*
+
+* Flaga danych kompletnych
+capture drop to_use
+gen to_use = !missing(age_group, income, health_score, employment_status, trust_index)
+
+* Lista zmiennych do modelu
+global xvars "c.age c.income c.total_hours i.over_40_hours c.benefits_allowances i.health_score i.employment_status"
+
+* Model wielomianowy logitowy
+mlogit trust_group $xvars if to_use, baseoutcome(1)
+est store ml1
+
+
+*-----------------------------------*
+*   TESTY ISTOTNOŚCI   *
+*-----------------------------------*
+
+test c.age  
+test c.income
+test c.total_hours
+test c.benefits_allowances
+
+test [2]1.over_40_hours = [3]1.over_40_hours
+
+
+*-----------------------------------*
+*   POŁĄCZENIE KATEGORII   *
+*-----------------------------------*
+
+*ssc install spost13_ado
+mlogtest, combine
+
+
+*-----------------------------------*
+*   TESTY NIEZALEŻNOŚCI ALTERNATYW   *
+*-----------------------------------*
+
+mlogit trust_group $xvars if to_use & trust_group != 3, baseoutcome(1)
+est store ml2
+hausman ml1 ml2, alleqs constant
+
+
+*-----------------------------------*
+*   INTERPRETACJA WSPÓŁCZYNNIKÓW   *
+*-----------------------------------*
+
+*esttab ml1, eform nobase unstack
+
+
+*-----------------------------------*
+*   EFEKTY KRAŃCOWE   *
+*-----------------------------------*
+
+margins , dydx(income total_hours benefits_allowances)
+margins, at(over_40_hours = (0 1))
+marginsplot, plotdimension(over_40_hours)
 
 ```
-. summarize trust_group
-```
-
-| Variable     | Obs    | Mean | Std. Dev. | Min | Max |
-| ------------ | ------ | ---- | --------- | --- | --- |
-| trust\_group | 22,028 | 2.11 | 0.47      | 1   | 3   |
 
 ---
 
-#### **5. Social Benefits (`benefits_allowances`):**
-
-A comprehensive variable summarizing all social benefits received, including unemployment, old-age, survivor's, and sickness benefits.
-
-* **Components:**
-
-  * `PY090` – Unemployment benefits
-  * `PY100G` – Old-age benefits
-  * `PY110G` – Survivor's benefits
-  * `PY120G` – Sickness benefits
-
-**Implementation:**
-
-```stata
-destring PY110G, replace force
-destring PY120G, replace force
-gen benefits_allowances = PY090 + PY100G + PY110G + PY120G
-label var benefits_allowances "Total Social Benefits"
-```
-
-**Summary Statistics for `benefits_allowances`:**
-
-```
-. summarize benefits_allowances
-```
-
-| Variable             | Obs    | Mean     | Std. Dev. | Min | Max     |
-| -------------------- | ------ | -------- | --------- | --- | ------- |
-| benefits\_allowances | 21,760 | 3,540.12 | 8,912.43  | 0   | 135,000 |
-
----
-
-#### **6. Age (`age`):**
-
-The `age` variable was calculated using the birth year (`PB140`) and the reference year (`PB110`). It provides demographic context for further segmentation and analysis.
-
-**Implementation:**
-
-```stata
-gen age = PB110 - PB140
-label var age "Age in 2013"
-```
-
-**Summary Statistics for `age`:**
-
-```
-. summarize age
-```
-
-| Variable | Obs    | Mean | Std. Dev. | Min | Max |
-| -------- | ------ | ---- | --------- | --- | --- |
-| age      | 22,041 | 47.3 | 16.5      | 16  | 98  |
-
----
-
-### **3.6.2 Summary and Implications:**
-
-* The dataset includes multiple composite variables that capture essential socio-economic aspects, including income, health status, social benefits, and trust in public institutions.
-* Trust in public institutions was categorized into three groups (`Low`, `Moderate`, `High`), facilitating comparative analysis.
-* Analysis of income by trust group revealed minimal variation, suggesting that income may not be a strong predictor of trust levels.
-* The inclusion of social benefits and health scores enables further investigation into the socio-economic determinants of trust.
-
-Would you like me to proceed with further analysis or adjustments? 👍🙂
-
-
----
-
-## 4. Methodology
-
-### 4.1 Regression Discontinuity Design (RDD)
-
-- Assignment variable: Working hours (binary threshold: 40 hours).
-- Treatment group: Individuals working more than 40 hours per week.
-- Control group: Individuals working 40 hours or less.
-
-### 4.2 RDD Equation
-
-\[
-Y_i = \alpha + \tau D_i + \gamma X_i + \epsilon_i
-\]
-
-Where:  
-- \( Y_i \) – Trust in police (`PW150`)  
-- \( D_i \) – Treatment indicator (`over_40_hours`)  
-- \( X_i \) – Covariates (`PH020`, `PH030`, `PB150`, `PB190`)  
-- \( \tau \) – Treatment effect (working more than 40 hours)  
-- \( \gamma \) – Effect of control variables
-
----
-
-## 5. Results
-
-### 5.1 Descriptive Statistics
-
-| Variable | Mean | Std. Dev. | Min | Max |
-|----------|------|-----------|-----|-----|
-| Working hours | XX | XX | 0 | 80 |
-| Trust in police | XX | XX | 1 | 10 |
-| Chronic illness | XX | XX | 0 | 1 |
-
----
-
-### 5.2 RDD Estimation Results
-
-| Variable        | Coefficient | Std. Error | p-value |
-|-----------------|-------------|------------|---------|
-| Over 40 hours   | XX          | XX         | XX      |
-| Chronic illness | XX          | XX         | XX      |
-| Gender          | XX          | XX         | XX      |
-| Marital status  | XX          | XX         | XX      |
-
----
-
-### 5.3 Robustness Checks
-
-- Checking for potential manipulation of the running variable (`working hours`).
-- Assessing heterogeneity of treatment effects by gender and health status.
-
----
-
-## 6. Conclusion
-
-- Summary of key findings:
-  - The impact of excessive working hours on trust in police is statistically significant/insignificant.
-  - Health status moderates the relationship, with chronic illness amplifying/reducing the effect of working hours.
-
-- Policy implications:
-  - Potential need for work-hour regulations to mitigate trust erosion in public institutions.
-  - Interventions targeting health support in high-stress occupations.
-
-- Suggestions for further research:
-  - Exploring other public institutions (e.g., legal system, government).
-  - Analysis over multiple years to capture long-term effects.
-
----
-
-## 7. STATA Code
-
-```stata
-* Import data
-use "path_to_data.dta", clear
-
-* Generate treatment variable
-gen over_40_hours = (PL060 + PL100) > 40
-
-* Regression Discontinuity Design
-rddreg PW150 over_40_hours PH020 PH030 PB150 PB190, cutoff(40)
-
-* Display results
-reg PW150 over_40_hours PH020 PH030 PB150 PB190
-
-* Export graph
-estat trendplots
-graph export "rdd_analysis.svg", replace
+Would you like any further refinements or additional sections? 👍🙂
